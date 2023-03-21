@@ -1,3 +1,8 @@
+Install dependencies
+```bash
+pip install -r lib.txt
+```
+
 to convert `.mp3` to `.wav`
 
 use `ffmpeg` if you use Linux
@@ -9,7 +14,7 @@ or use an online tool like [cloudconvert](https://cloudconvert.com/mp3-to-wav)
 
 <u>**Program Requirements:**</u>
 
-Required is a program that divides any input speech signal into frames. The user canspecify any frame size, any overlap size and any window type.
+Required is a program that divides any input speech signal into frames. The user can specify any frame size, any overlap size and any window type.
 
 <u>**Inputs:**</u>
 

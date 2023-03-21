@@ -1,3 +1,12 @@
+#####################################
+#                                   #
+#  @author      : 00xWolf           #
+#    GitHub    : @mmsaeed509       #
+#    Developer : Mahmoud Mohamed   #
+#  﫥  Copyright : Mahmoud Mohamed   #
+#                                   #
+#####################################
+
 import numpy as np
 from scipy.io import wavfile
 from matplotlib import pyplot as plt
@@ -6,10 +15,10 @@ import COLORS  # coloring the output  #
 # read the wave file, returns the sample rate and the signal as a NumPy array. #
 sample_rate, signal = wavfile.read('voice.wav')
 
-plt.title('Original Signal')
-plt.plot(signal)
-plt.show()
-signal.shape
+# plt.title('Original Signal')
+# plt.plot(signal)
+# plt.show()
+# signal.shape
 
 
 #
@@ -18,7 +27,7 @@ signal.shape
 # arg-3 : `win_len` the length of each frame in seconds (default value is 0.025s or 25ms)
 # arg-4 : `win_hop` the hop size between adjacent frames in seconds (default value is 0.01s or 10ms)
 #
-def framing(sig, fs=16000, win_len=0.025, win_hop=0.01):
+def framing(sig, fs=16000, win_len=5, win_hop=1):
     Frames = []
     # calc the length of each frame and the No. samples to skip between frames
     # based on the sampling frequency
@@ -54,6 +63,21 @@ print(COLORS.RESET_COLOR)
 
 frames.shape
 frames = frames.reshape(frames.shape[0] * frames.shape[1], 2)
+# plt.title('Framed Signal')
+# plt.plot(frames)
+# plt.show()
+
+# Plot Original and Framed Signal
+plt.figure(figsize=(12, 6))
+plt.subplot(2, 1, 1)
+plt.plot(signal)
+plt.title('Original Signal')
+plt.xlabel('Sample')
+plt.ylabel('Amplitude')
+plt.subplot(2, 1, 2)
+plt.plot(np.concatenate(frames))
 plt.title('Framed Signal')
-plt.plot(frames)
+plt.xlabel('Sample')
+plt.ylabel('Amplitude')
+plt.tight_layout()
 plt.show()
