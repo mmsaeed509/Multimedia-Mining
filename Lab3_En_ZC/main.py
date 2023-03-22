@@ -6,80 +6,28 @@
 #  﫥  Copyright : Mahmoud Mohamed   #
 #                                   #
 #####################################
+#
+# import numpy as np
+# from scipy.io import wavfile
+# from matplotlib import pyplot as plt
 
+import COLORS  # coloring the output  #
 import scipy.io.wavfile
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-def read_audio_file(file_path="./voice.wav"):
-    """Reads an audio file from the given file path and returns its sample rate and signal data."""
-    sample_rate, signal = scipy.io.wavfile.read(file_path)
-    return sample_rate, signal
-
-
-def frame_signal(frame_size, frame_overlap, window_type):
-    """Divides the given signal into frames and applies a window function to each frame.
-
-    Returns the resulting frames as a 2D array, as well as the energy and zero-crossing rate of each frame."""
-    sample_rate, signal = read_audio_file()
-
-    frame_length = int(round(frame_size * sample_rate))
-    frame_step = int(round(frame_overlap * sample_rate))
-    num_frames = int(np.ceil(float(np.abs(len(signal) - frame_length)) / frame_step))
-    pad_signal_length = num_frames * frame_step + frame_length
-    z = np.zeros(pad_signal_length - len(signal))
-    pad_signal = np.append(signal, z)
-
-    indices = np.tile(np.arange(0, frame_length), (num_frames, 1)) + np.tile(
-        np.arange(0, num_frames * frame_step, frame_step), (frame_length, 1)).T
-    frames = pad_signal[indices.astype(np.int32, copy=False)]
-
-    if window_type == 'hamming':
-        window = np.hamming(frame_length)
-    elif window_type == 'hanning':
-        window = np.hanning(frame_length)
-    else:
-        window = np.blackman(frame_length)
-    frames *= window
-
-    energy_list = np.sum(frames ** 2, axis=1)
-
-    zero_cross_list = np.array([np.sum(np.abs(np.diff(np.sign(frame)))) / (2 * len(frame)) for frame in frames])
-
-    return frames, energy_list, zero_cross_list
-
-
-frame_size = float(input("Enter frame size in seconds: "))
-frame_overlap = float(input("Enter overlap size in seconds: "))
-window_type = input("Enter window type (e.g. hamming, hanning, blackman): ")
-
-frames, energy_list, zero_cross_list = frame_signal(frame_size, frame_overlap, window_type)
-
-fig, (ax1, ax2) = plt.subplots(nrows=2, sharex=True)
-ax1.plot((read_audio_file()[1]))
-ax1.set_title('Original Signal')
-ax2.plot(frames.reshape(-1))
-ax2.set_title('Framed Signal')
-plt.show()
-
-plt.plot(energy_list)
-plt.title('Energy of Frames')
-plt.show()
-
-plt.plot(zero_cross_list)
-plt.title('Zero-Crossing Rate of Frames')
-plt.show()
-
-#
-# import numpy as np
-# from scipy.io import wavfile
-# from matplotlib import pyplot as plt
-# import COLORS  # coloring the output  #
 #
 # # read the wave file, returns the sample rate and the signal as a NumPy array. #
 # sample_rate, signal = wavfile.read('voice.wav')
 #
+
+def read_audio_file(file_path="./voice.wav"):
+    # Reads an audio file from the given file path and returns its sample rate and signal data.
+    sample_rate, signal = scipy.io.wavfile.read(file_path)
+    return sample_rate, signal
+
+
 #
 # #
 # # arg-1 : `sig` the audio signal to be framed
@@ -136,6 +84,44 @@ plt.show()
 # plt.tight_layout()
 # plt.show()
 #
+
+def frame_signal(frame_size, frame_overlap, window_type):
+    # Divides the given signal into frames and applies a window function to each frame.
+    # Returns the resulting frames as a 2D array, as well as the energy and zero-crossing rate of each frame.
+    sample_rate, signal = read_audio_file()
+
+    frame_length = int(round(frame_size * sample_rate))
+    frame_step = int(round(frame_overlap * sample_rate))
+    num_frames = int(np.ceil(float(np.abs(len(signal) - frame_length)) / frame_step))
+    pad_signal_length = num_frames * frame_step + frame_length
+    z = np.zeros(pad_signal_length - len(signal))
+    pad_signal = np.append(signal, z)
+
+    indices = np.tile(np.arange(0, frame_length), (num_frames, 1)) + np.tile(
+        np.arange(0, num_frames * frame_step, frame_step), (frame_length, 1)).T
+    frames = pad_signal[indices.astype(np.int32, copy=False)]
+
+    if window_type == 'hamming':
+        window = np.hamming(frame_length)
+    elif window_type == 'hanning':
+        window = np.hanning(frame_length)
+    else:
+        window = np.blackman(frame_length)
+    frames *= window
+
+    energy_list = np.sum(frames ** 2, axis=1)
+    print("\n" + COLORS.BOLD_GREEN + "Energy Of Frames:" + COLORS.BOLD_PURPLE)
+    print(energy_list)
+    print(COLORS.RESET_COLOR)
+
+    # the rate at which a signal transitions from positive to zero to negative or negative to zero to positive.
+    zero_cross_list = np.array([np.sum(np.abs(np.diff(np.sign(frame)))) / (2 * len(frame)) for frame in frames])
+    print("\n" + COLORS.BOLD_GREEN + "Zero Crossing Rate:" + COLORS.BOLD_PURPLE)
+    print(zero_cross_list)
+    print(COLORS.RESET_COLOR)
+
+    return frames, energy_list, zero_cross_list
+
 #
 # def energy(frame):
 #     """
@@ -177,3 +163,25 @@ plt.show()
 # plt.ylabel('Zero crossing rate')
 # plt.tight_layout()
 # plt.show()
+
+frame_size = float(input("Enter frame size in seconds: "))
+frame_overlap = float(input("Enter overlap size in seconds: "))
+window_type = input("Enter window type [e.g. hamming, hanning, blackman]: ")
+
+frames, energy_list, zero_cross_list = frame_signal(frame_size, frame_overlap, window_type)
+
+fig, (ax1, ax2) = plt.subplots(nrows=2, sharex=True)
+ax1.plot((read_audio_file()[1]))
+ax1.set_title('Original Signal')
+ax2.plot(frames.reshape(-1))
+ax2.set_title('Framed Signal')
+plt.show()
+
+plt.plot(energy_list)
+plt.title('Energy of Frames')
+plt.show()
+
+plt.plot(zero_cross_list)
+plt.title('Zero-Crossing Rate of Frames')
+plt.show()
+
