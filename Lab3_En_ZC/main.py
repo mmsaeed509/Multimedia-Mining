@@ -109,6 +109,7 @@ def frame_signal(frame_size, frame_overlap, window_type):
         window = np.blackman(frame_length)
     frames *= window
 
+    # sum of frames ** 2 #
     energy_list = np.sum(frames ** 2, axis=1)
     print("\n" + COLORS.BOLD_GREEN + "Energy Of Frames:" + COLORS.BOLD_PURPLE)
     print(energy_list)
@@ -121,6 +122,7 @@ def frame_signal(frame_size, frame_overlap, window_type):
     print(COLORS.RESET_COLOR)
 
     return frames, energy_list, zero_cross_list
+
 
 #
 # def energy(frame):
@@ -166,9 +168,8 @@ def frame_signal(frame_size, frame_overlap, window_type):
 
 frame_size = float(input("Enter frame size in seconds: "))
 frame_overlap = float(input("Enter overlap size in seconds: "))
-window_type = input("Enter window type [e.g. hamming, hanning, blackman]: ")
 
-frames, energy_list, zero_cross_list = frame_signal(frame_size, frame_overlap, window_type)
+frames, energy_list, zero_cross_list = frame_signal(frame_size, frame_overlap, "blackman")
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, sharex=True)
 ax1.plot((read_audio_file()[1]))
@@ -184,4 +185,3 @@ plt.show()
 plt.plot(zero_cross_list)
 plt.title('Zero-Crossing Rate of Frames')
 plt.show()
-
