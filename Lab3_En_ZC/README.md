@@ -1,4 +1,5 @@
 Install dependencies
+
 ```bash
 pip install -r lib.txt
 ```
@@ -6,6 +7,7 @@ pip install -r lib.txt
 to convert `.mp3` to `.wav`
 
 use `ffmpeg` if you use Linux
+
 ```bash
 ffmpeg -i voice.mp3 voice.wav
 ```
