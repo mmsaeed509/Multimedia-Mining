@@ -1,5 +1,28 @@
 <h3 align="center"> commands </h3>
 
-- convert the grammar to a word network `HParse grammar.txt wdnet.txt`
-- call HCompv to create `mfcc` files `HCopy -T 1 -C coding_cfg.txt -S coding_scp.txt`
-- 
+### convert the grammar to a word network 
+
+```bash
+HParse grammar.txt wdnet.txt
+```
+### call HCompv to create `mfcc` files 
+
+```bash
+HCopy -T 1 -C coding_cfg.txt -S coding_scp.txt
+```
+
+### Compute global parameters
+
+In this step we will compute the global mean and variance and set all of the Gaussians ina given *HMM* to have the same mean and variance.
+We will use the tool `HComV`.
+
+> <u>**Note:**</u>
+> 
+> **create a directory `hmm0` before executing the command**
+
+```bash
+HCompV -C train_cfg.txt -f 0.01 -m -S train_scp.txt -M hmm0 proto
+```
+The previous command will scan the given set of files, and create a new `hmmfile` in the directory `hmm0` containing the updated means and variances, also it will create the file `vFloors` for variance flooring.
+
+### Create Master `HMM` file
