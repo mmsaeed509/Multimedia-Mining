@@ -1,0 +1,86 @@
+#
+# Maintainer: Mahmoud Mohamed (00xWolf) <mmsaeed509@gmail.com> , <https://github.com/mmsaeed509>
+#
+
+pkgname=exodia-htk
+_pkgname=HTK-3.5.beta-2
+pkgver=3.5
+pkgrel=1
+pkgdesc="A portable toolkit primarily used for speech recognition research"
+arch=('any')
+url="http://htk.eng.cam.ac.uk/"
+license=('custom: Proprietary')
+depends=(
+  'lib32-glibc' 'lib32-libx11' 
+  'gcc' 'make' 'bzip2')
+makedepends=('wget' 'gcc-multilib')
+options=('!makeflags')
+
+prepare() {
+
+	cp -af ../HTK-3.5.beta-2/. ${srcdir}
+
+}
+
+build() {
+
+  # Compiling HTKLib #
+  cd ${srcdir}/HTKLib
+
+  make -f MakefileCPU all
+  make -f MakefileCPU install
+  # make -f MakefileCPU clean # Clean #
+
+  # Compiling HLMLib #
+  cd ${srcdir}/HLMLib
+
+  make -f MakefileCPU all
+  make -f MakefileCPU install
+  # make -f MakefileCPU clean # Clean #
+
+  # Compiling HTKTools #
+  cd ${srcdir}/HTKTools
+
+  make -f MakefileCPU all
+  make -f MakefileCPU install
+  # make -f MakefileCPU clean # Clean #
+
+  # Compiling HLMTools #
+  cd ${srcdir}/HLMTools
+
+  make -f MakefileCPU all
+  make -f MakefileCPU install
+  # make -f MakefileCPU clean # Clean #
+
+
+}
+
+package() {
+
+  # create a needed dirs #
+  BIN_DIR=${pkgdir}/usr/bin
+  LIB_DIR=${pkgdir}/usr/lib
+  LICENSE_DIR=${pkgdir}/usr/share/licenses/${_pkgname}/LICENSE
+
+  mkdir -p ${BIN_DIR} ${LIB_DIR} ${LICENSE_DIR}
+
+  # install binaries #
+  cd ${srcdir}
+  
+  # install HTKLib binaries #
+  cp -r bin.cpu-HTKTools/* ${BIN_DIR}
+
+  # install HLMTools binaries #
+  cp -r bin.cpu-HLMTools/* ${BIN_DIR}
+  
+
+  # install HTK libraries #
+  cp -r HTKLib/lib/* ${LIB_DIR}
+
+  # install HLM libraries #
+  cp -r HLMLib/lib/* ${LIB_DIR}
+
+  # install License #
+  install -D -m644 ${srcdir}/LICENSE ${LICENSE_DIR}
+
+}

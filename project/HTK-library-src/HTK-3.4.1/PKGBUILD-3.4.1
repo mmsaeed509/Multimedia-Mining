@@ -1,0 +1,84 @@
+#
+# Maintainer: Mahmoud Mohamed (00xWolf) <mmsaeed509@gmail.com> , <https://github.com/mmsaeed509>
+#
+
+pkgname=exodia-htk
+_pkgname=htk
+pkgver=3.4.1
+pkgrel=1
+pkgdesc="A portable toolkit primarily used for speech recognition research"
+arch=('any')
+url="http://htk.eng.cam.ac.uk/"
+license=('custom: Proprietary')
+depends=(
+  'lib32-glibc' 'lib32-libx11' 
+  'gcc' 'make' 'bzip2')
+makedepends=('wget' 'gcc-multilib')
+options=('!makeflags')
+# source=(
+  
+#   "${url}/ftp/software/HTK-${pkgver}.tar.gz"
+#   "https://htk.eng.cam.ac.uk/ftp/software/HTK-samples-3.4.1.tar.gz"
+  
+#   )
+
+source=(
+  
+  "HTK-3.4.1.tar.gz"
+  "HTK-samples-3.4.1.tar.gz"
+  "mkfile.in.patch"
+
+  )
+md5sums=(
+  
+  'SKIP'
+  'SKIP'
+  'SKIP'
+
+  )
+
+build() {
+
+# Note: HTK cannot be downloaded without a username/password. Use name and password from your registration here.
+# http://htk.eng.cam.ac.uk/ftp/software/HTK-3.4.1.tar.gz
+#  wget --user=YOUR_USERNAME --password=YOUR_PASSWORD http://htk.eng.cam.ac.uk/ftp/software/HTK-$pkgver.tar.gz
+
+  # unpack file #
+  tar -xzvf HTK-${pkgver}.tar.gz
+  tar -xzvf HTK-samples-${pkgver}.tar.gz
+
+  #mv htk ${pkgname}   # needed before, as pkgname was "pkg64"
+  # here now 64-bit-optimization might be introduced...
+  if  [ "$HOSTTYPE" == "x86_64" ];
+    then
+      echo 64 Bit
+  else
+    echo 32 Bit
+  fi
+
+  set | grep -e 32 -e 64
+
+  # substitute spaces instead of tabs in Makefile-rule #
+  patch  ${srcdir}/${_pkgname}/HLMTools/Makefile.in ../mkfile.in.patch
+
+
+  # make the stuff #
+  cd ${srcdir}/${_pkgname}
+  ./configure --prefix=${pkgdir}/usr
+  make all
+
+}
+
+package() {
+
+  # create a needed dir #
+  mkdir -p ${pkgdir}/usr/bin
+
+  # install binaries #
+  cd ${srcdir}/${_pkgname}
+  make install
+
+  # install License #
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/$_pkgname/LICENSE
+
+}
