@@ -20,11 +20,11 @@ for i in {0..9}; do
         # Add leading zero to j counter if less than 10 #
         if [[ "$j" -lt 10 ]]; then
 
-            echo "~/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_0${j}.mfc" >> ~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt
+            echo "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_0${j}.mfc" >> ~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt
 
         else
 
-            echo "~/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_${j}.mfc" >> ~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt
+            echo "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_${j}.mfc" >> ~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt
 
         fi
 
