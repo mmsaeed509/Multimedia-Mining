@@ -69,7 +69,7 @@ BUILD_PKG () {
     sleep 0.5
 
     echo -e "\n${BRed}[+] moving new package to parent directory before cleaning building files${RESET_COLOR}"
-    mv ./*.pkg.tar.zst ../
+    mv ./*.pkg.tar.zst ../../
     sleep 0.5
     
     # cleaning building #

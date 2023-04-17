@@ -15,38 +15,40 @@ depends=(
   'gcc' 'make' 'bzip2')
 makedepends=('wget' 'gcc-multilib')
 options=('!makeflags')
+source=("HTK-3.5.beta-2.tar.gz")
+sha256sums=('SKIP')
 
-prepare() {
+# prepare() {
 
-	cp -af ../HTK-3.5.beta-2/. ${srcdir}
+# 	cp -af ../HTK-3.5.beta-2/. ${srcdir}
 
-}
+# }
 
 build() {
 
   # Compiling HTKLib #
-  cd ${srcdir}/HTKLib
+  cd ${srcdir}/${_pkgname}/HTKLib
 
   make -f MakefileCPU all
   make -f MakefileCPU install
   # make -f MakefileCPU clean # Clean #
 
   # Compiling HLMLib #
-  cd ${srcdir}/HLMLib
+  cd ${srcdir}/${_pkgname}/HLMLib
 
   make -f MakefileCPU all
   make -f MakefileCPU install
   # make -f MakefileCPU clean # Clean #
 
   # Compiling HTKTools #
-  cd ${srcdir}/HTKTools
+  cd ${srcdir}/${_pkgname}/HTKTools
 
   make -f MakefileCPU all
   make -f MakefileCPU install
   # make -f MakefileCPU clean # Clean #
 
   # Compiling HLMTools #
-  cd ${srcdir}/HLMTools
+  cd ${srcdir}/${_pkgname}/HLMTools
 
   make -f MakefileCPU all
   make -f MakefileCPU install
@@ -65,7 +67,7 @@ package() {
   mkdir -p ${BIN_DIR} ${LIB_DIR} ${LICENSE_DIR}
 
   # install binaries #
-  cd ${srcdir}
+  cd ${srcdir}/${_pkgname}
   
   # install HTKLib binaries #
   cp -r bin.cpu-HTKTools/* ${BIN_DIR}
@@ -81,6 +83,6 @@ package() {
   cp -r HLMLib/lib/* ${LIB_DIR}
 
   # install License #
-  install -D -m644 ${srcdir}/LICENSE ${LICENSE_DIR}
+  install -D -m644 ${srcdir}/${_pkgname}/LICENSE ${LICENSE_DIR}
 
 }
