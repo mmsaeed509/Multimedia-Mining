@@ -1,7 +1,7 @@
 # Multimedia-Mining
 Multimedia Mining
 
-![](imgs/Multimedia-Mining.webp)
+![](imgs/DALL%C2%B7E-Multimedia-Mining.png)
 
 ### 
 
