@@ -9,11 +9,12 @@
 
 Set-Content -Path ./trans.mlf -Value '#!MLF!#'
 
-for ($i=0; $i -le 9; $i++) {
+$output = for ($i=0; $i -le 9; $i++) {
 
     for ($j=1; $j -le 20; $j++) {
 
-        Write-Output "\"*/${i}_$('{0:d2}' -f $j).lab\""
+        $fileName = "*/${i}_$('{0:d2}' -f $j).lab"
+        Write-Output "`"$fileName`""
         Write-Output "SIL"
 
         switch ($i) {
@@ -35,4 +36,6 @@ for ($i=0; $i -le 9; $i++) {
 
     }
     
-} | Out-File -FilePath ./trans.mlf -Append
+}
+
+$output | Out-File -FilePath ./trans.mlf -Append

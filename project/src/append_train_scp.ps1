@@ -9,7 +9,7 @@
 
 
 # Create an empty train_scp.txt file
-New-Item -ItemType File -Path "~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt" -Force | Out-Null
+New-Item -ItemType File -Path "train_scp.txt" -Force | Out-Null
 
 # Loop through the file paths and append them to train_scp.txt #
 for ($i=0; $i -le 9; $i++) {
@@ -19,11 +19,11 @@ for ($i=0; $i -le 9; $i++) {
         # Add leading zero to j counter if less than 10 #
         if ($j -lt 10) {
 
-            Add-Content -Path "~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt" -Value "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_0${j}.mfc"
+            Add-Content -Path "train_scp.txt" -Value "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_0${j}.mfc"
 
         } else {
 
-            Add-Content -Path "~/GitHub/FCAI-CU/Multimedia-Mining/project/src/train_scp.txt" -Value "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_${j}.mfc"
+            Add-Content -Path "train_scp.txt" -Value "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_${j}.mfc"
 
         }
 
