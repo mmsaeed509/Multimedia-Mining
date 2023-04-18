@@ -7,23 +7,27 @@
 #                                   #
 #####################################
 
+# needed Paths #
+$PATH = (Get-Location).Path
+$WAV_PATH = "$PATH\wav"
+$MFCC_PATH = "$PATH\mfcc"
 
-# Create an empty train_scp.txt file
-New-Item -ItemType File -Path "train_scp.txt" -Force | Out-Null
+# Create an empty coding_scp.txt file #
+New-Item -ItemType file "coding_scp.txt" -Force
 
-# Loop through the file paths and append them to train_scp.txt #
-for ($i=0; $i -le 9; $i++) {
+# Loop through the file paths and append them to coding_scp.txt #
+for ($i=0; $i -lt 10; $i++) {
 
     for ($j=1; $j -le 20; $j++) {
 
         # Add leading zero to j counter if less than 10 #
         if ($j -lt 10) {
 
-            Add-Content -Path "train_scp.txt" -Value "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_0${j}.mfc"
+            Add-Content "coding_scp.txt" "$WAV_PATH\$i`_0$j.wav $MFCC_PATH\$i`_0$j.mfc"
 
         } else {
 
-            Add-Content -Path "train_scp.txt" -Value "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_${j}.mfc"
+            Add-Content "coding_scp.txt" "$WAV_PATH\$i`_$j.wav $MFCC_PATH\$i`_$j.mfc"
 
         }
 

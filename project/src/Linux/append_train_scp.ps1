@@ -1,5 +1,3 @@
-#!/bin/bash
-
 #####################################
 #                                   #
 #  @author      : 00xWolf           #
@@ -9,25 +7,29 @@
 #                                   #
 #####################################
 
-# Create an empty train_scp.txt file
-> train_scp.txt
+# needed Paths #
+$PATH = (Get-Location).Path
+$MFCC_PATH = "$PATH\mfcc"
+
+# Create an empty train_scp.txt file #
+New-Item -ItemType file "train_scp.txt" -Force
 
 # Loop through the file paths and append them to train_scp.txt #
-for i in {0..9}; do
+for ($i=0; $i -lt 10; $i++) {
 
-    for j in {1..20}; do
+    for ($j=1; $j -le 20; $j++) {
 
         # Add leading zero to j counter if less than 10 #
-        if [[ "$j" -lt 10 ]]; then
+        if ($j -lt 10) {
 
-            echo "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_0${j}.mfc" >> train_scp.txt
+            Add-Content "train_scp.txt" "$MFCC_PATH\$i`_0$j.mfc"
 
-        else
+        } else {
 
-            echo "/home/ozil/GitHub/FCAI-CU/Multimedia-Mining/project/src/mfcc/${i}_${j}.mfc" >> train_scp.txt
+            Add-Content "train_scp.txt" "$MFCC_PATH\$i`_$j.mfc"
 
-        fi
+        }
 
-    done
+    }
 
-done
+}
