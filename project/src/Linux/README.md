@@ -26,3 +26,9 @@ HCompV -C train_cfg.txt -f 0.01 -m -S train_scp.txt -M hmm0 proto
 The previous command will scan the given set of files, and create a new `hmmfile` in the directory `hmm0` containing the updated means and variances, also it will create the file `vFloors` for variance flooring.
 
 ### Create Master `HMM` file
+
+### Running the recognizer
+
+```bash
+HVite -H hmm1/hmm.txt -C run_cfg.txt -w wdnet.txt -p 0.0 -s 5.0 dictionary.txt ModelsList.txt
+```
