@@ -1,3 +1,8 @@
+### install Dependencies:
+
+```bash
+pip install -r lib.txt
+```
 
 - This is the new assignement that will be delivered by 10 May as deadline
 - It is for NLP / text processing problem

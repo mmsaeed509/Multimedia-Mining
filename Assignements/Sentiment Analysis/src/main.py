@@ -1,0 +1,64 @@
+#####################################
+#                                   #
+#  @author      : 00xWolf           #
+#    GitHub    : @mmsaeed509       #
+#    Developer : Mahmoud Mohamed   #
+#  﫥  Copyright : Mahmoud Mohamed   #
+#                                   #
+#####################################
+
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import COLORS
+
+# Load the CSV file of tweets into a pandas dataframe #
+print(COLORS.BOLD_PURPLE + "\n[*] Load train dataSet " + COLORS.RESET_COLOR)
+df = pd.read_csv('../dataSet/train.csv')
+
+# Split the dataframe into training and testing sets #
+print(COLORS.BOLD_PURPLE + "[+] Splitting the dataframe into training and testing sets " + COLORS.RESET_COLOR)
+X_train, X_test, y_train, y_test = train_test_split(df['tweet'], df['label'], test_size=0.2, random_state=42)
+
+# Convert the text data into numerical features using a bag-of-words model #
+print(COLORS.BOLD_PURPLE +
+      "[+] Converting the text data into numerical features using a bag-of-words model"
+      + COLORS.RESET_COLOR)
+vectorizer = CountVectorizer()
+X_train = vectorizer.fit_transform(X_train)
+X_test = vectorizer.transform(X_test)
+
+#
+# Naive Bayes classifier.
+# The multinomial Naive Bayes classifier is suitable for classification with
+# discrete features ( text classification)
+#
+clf = MultinomialNB()
+clf.fit(X_train, y_train)
+
+# Evaluate the classifier on the testing data #
+print(COLORS.BOLD_PURPLE + "[+] Evaluating the classifier on the testing data " + COLORS.RESET_COLOR)
+y_pred = clf.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(COLORS.BOLD_RED + "\n[Accuracy] " + COLORS.BOLD_CYAN, accuracy)
+print(COLORS.RESET_COLOR)
+
+### Testing ###
+
+print(COLORS.BOLD_PURPLE + "\n[+] Testing " + COLORS.RESET_COLOR)
+test_df = pd.read_csv("../dataSet/test.csv")
+
+# Convert the text data into numerical features using the same vectorizer used for training #
+X_test = vectorizer.transform(test_df['tweet'])
+
+# Use the trained classifier to predict the sentiment labels for the test data #
+y_pred = clf.predict(X_test)
+
+# Save the predictions to a new `submission.csv` file #
+print(COLORS.BOLD_PURPLE + "[+] Saving the predictions to a new `submission.csv` file " + COLORS.RESET_COLOR)
+submission_df = pd.DataFrame({'id': test_df['id'], 'label': y_pred})
+submission_df.to_csv("submission.csv", index=False)
+
+print(COLORS.BOLD_GREEN + "\n[✔] D O N E!" + COLORS.RESET_COLOR)
