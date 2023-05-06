@@ -42,7 +42,7 @@ clf.fit(X_train, y_train)
 print(COLORS.BOLD_PURPLE + "[+] Evaluating the classifier on the testing data " + COLORS.RESET_COLOR)
 y_pred = clf.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
-print(COLORS.BOLD_RED + "\n[Accuracy] " + COLORS.BOLD_CYAN, accuracy)
+print(COLORS.BOLD_RED + "\n[Accuracy] ", accuracy)
 print(COLORS.RESET_COLOR)
 
 ### Testing ###
@@ -57,7 +57,9 @@ X_test = vectorizer.transform(test_df['tweet'])
 y_pred = clf.predict(X_test)
 
 # Save the predictions to a new `submission.csv` file #
-print(COLORS.BOLD_PURPLE + "[+] Saving the predictions to a new `submission.csv` file " + COLORS.RESET_COLOR)
+print(COLORS.BOLD_PURPLE + "[+] Saving the predictions to a new" + COLORS.CYAN +
+      " `submission.csv` " + COLORS.BOLD_PURPLE + "file " + COLORS.RESET_COLOR)
+
 submission_df = pd.DataFrame({'id': test_df['id'], 'label': y_pred})
 submission_df.to_csv("submission.csv", index=False)
 
